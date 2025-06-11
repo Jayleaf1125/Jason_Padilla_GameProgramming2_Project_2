@@ -37,19 +37,19 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        CheckLeftShift();
+        IsRunning();
     }
-    void CheckLeftShift()
+    void IsRunning()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _isRunning = true;
+           _isRunning = true;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            movementSpeed /= runSpeed;
             _isRunning = false;
+            movementSpeed /= runSpeed;
             _isRunningMultplierActive = false;
         }
     }
@@ -62,12 +62,16 @@ public class PlayerMovement : MonoBehaviour
         if (_vectorMovement.x == 0)
         {
             SetState(MovementState.Idle);
-        } else 
-        {
-            SetState(MovementState.Walk);
+        } else if (_vectorMovement.x == 1 || _vectorMovement.x == -1) {
+            if(_isRunning)
+            {
+                SetState(MovementState.Run);
+                return;
+            }
 
-            if(_isRunning) SetState(MovementState.Run);
+            SetState(MovementState.Walk);
         } 
+        
 
     }
 
@@ -90,13 +94,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Idling()
     {
-        Debug.Log("Is Now Idling");
         _playerAnimatorManager.PlayIdleAnimation();
     }
 
     void Walking()
     {
-        Debug.Log("Is Now Walking");
         _rb.MovePosition(_rb.position + _vectorMovement * movementSpeed * Time.fixedDeltaTime);
         _playerAnimatorManager.PlayWalkAnimation();
         FlipCharacterSprite();
@@ -122,13 +124,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Running()
     {
-        Debug.Log("Is Now Running");
-
-        if(!_isRunningMultplierActive)
+        if (!_isRunningMultplierActive)
         {
             movementSpeed *= runSpeed;
             _isRunningMultplierActive = true;
-            _playerAnimatorManager.PlayRunAnimation();
         }
+
+        _rb.MovePosition(_rb.position + _vectorMovement * movementSpeed * Time.fixedDeltaTime);
+        _playerAnimatorManager.PlayRunAnimation();
+        FlipCharacterSprite();
     }
 }
