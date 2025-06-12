@@ -1,14 +1,16 @@
 using UnityEngine;
 using System.Collections;
 
-public enum MovementState
+public enum PlayerState
 {
     Idle,
     Walk,
     Run,
     Jump,
     Dash,
-    Attack1
+    Attack1,
+    Attack2,
+    Attack3
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -24,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashCooldown;
 
     [Header("Current State")]
-    public MovementState currentState;
+    public PlayerState currentState;
 
     // dash timer cooldown
     bool _isDashAvailable;
@@ -41,7 +43,13 @@ public class PlayerMovement : MonoBehaviour
     bool _isRunning;
     bool _isRunningMultplierActive;
 
-    bool _isAttackTriggered;
+    bool _isAttackOneTriggered;
+    bool _isAttackTwoTriggered;
+    bool _isAttackThreeTriggered;
+    // Combat Variables
+    bool _isAttackTwoReady = false;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,8 +66,13 @@ public class PlayerMovement : MonoBehaviour
         _dashTimer = dashCooldown;
         _isDashingActive = false;
 
-        _isAttackTriggered = false;
+        _isAttackOneTriggered = false;
+        _isAttackTwoTriggered = false;
+        _isAttackThreeTriggered = false;
+
         _originalMovementSpeed = movementSpeed;
+
+
     }
 
     void Update()
@@ -69,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            SetState(MovementState.Attack1);
+            SetState(PlayerState.Attack1);
         }
     }
     void IsRunning()
@@ -107,24 +120,24 @@ public class PlayerMovement : MonoBehaviour
 
         MovementSetUp();
 
-        if (_vectorMovement.x == 0 && !_isAttackTriggered)
+        if (_vectorMovement.x == 0 && !_isAttackOneTriggered)
         {
-            SetState(MovementState.Idle);
+            SetState(PlayerState.Idle);
         } else if (_vectorMovement.x == 1 || _vectorMovement.x == -1) {
 
             if(_isRunning)
             {
-                SetState(MovementState.Run);
+                SetState(PlayerState.Run);
                 return;
             }
 
             if(_isDashing)
             {
-                SetState(MovementState.Dash);
+                SetState(PlayerState.Dash);
                 return;
             }
 
-            SetState(MovementState.Walk);
+            SetState(PlayerState.Walk);
         } 
         
         SetState(currentState);
@@ -137,32 +150,40 @@ public class PlayerMovement : MonoBehaviour
         FlipCharacterSprite();
     }
 
-    void SetState(MovementState s)
+    void SetState(PlayerState s)
     {
         if (s == currentState) return;
         currentState = s;
 
         switch (s)
         {
-            case MovementState.Idle:
+            case PlayerState.Idle:
                 Debug.Log("Is Idling");
                 Idling();
                 break;
-            case MovementState.Walk:
+            case PlayerState.Walk:
                 Debug.Log("Is Walking");
                 Walking();
                 break;
-            case MovementState.Run:
+            case PlayerState.Run:
                 Debug.Log("Is Running");
                 Running();
                 break;
-            case MovementState.Dash:
+            case PlayerState.Dash:
                 Debug.Log("Is Dashing");
                 StartCoroutine(Dashing());
                 break;
-            case MovementState.Attack1:
+            case PlayerState.Attack1:
                 Debug.Log("Is Commencing Attack One");
                 StartCoroutine(AttackOne());
+                break;
+            case PlayerState.Attack2:
+                Debug.Log("Is Commencing Attack Two");
+                StartCoroutine(AttackTwo());
+                break;
+            case PlayerState.Attack3:
+                Debug.Log("Is Commencing Attack Three");
+                //StartCoroutine(AttackThree());
                 break;
         }
     }
@@ -219,14 +240,43 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator AttackOne()
     {
-        if(!_isAttackTriggered)
+        if(!_isAttackOneTriggered)
         {
             _playerAnimatorManager.PlayAttackOneAnimation();
-            _isAttackTriggered = true;
+            _isAttackOneTriggered = true;
+            _isAttackTwoReady = true;
         }
 
         yield return new WaitForSeconds(0.5f);
-        _isAttackTriggered = false;
+        StartCoroutine(NextAttackInterval("Two"));
+        _isAttackOneTriggered = false;
     }
+
+    IEnumerator NextAttackInterval(string nextAttack)
+    {
+        Debug.Log("Next Attack Interval Started");
+        if (Input.GetMouseButtonDown(0) && nextAttack == "two")
+        {
+            SetState(PlayerState.Attack2);
+        }
+        yield return new WaitForSeconds(5f);
+
+    }
+
+    IEnumerator AttackTwo()
+    {
+        if (!_isAttackTwoTriggered)
+        {
+            _playerAnimatorManager.PlayAttackTwoAnimation();
+            _isAttackTwoTriggered = true;
+            //_isAttackTwoReady = true;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(NextAttackInterval("Two"));
+        _isAttackTwoTriggered = false;
+    }
+
+
 
 }
