@@ -7,7 +7,8 @@ public enum MovementState
     Walk,
     Run,
     Jump,
-    Dash
+    Dash,
+    Attack1
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -20,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     public float dashSpeed;
     public float dashDuration;
     public float dashCooldown;
+
+    [Header("Current State")]
+    public MovementState currentState;
 
     // dash timer cooldown
     bool _isDashAvailable;
@@ -34,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
     bool _isRunning;
     bool _isRunningMultplierActive;
 
+    bool _isAttackTriggered;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         _isRunningMultplierActive = false;
         _isDashAvailable = true;
         _dashTimer = dashCooldown;
+        _isAttackTriggered = false;
     }
 
     void Update()
@@ -53,6 +60,12 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space) && _isDashAvailable)
         {
             SetState(MovementState.Dash);
+            return;
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            SetState(MovementState.Attack1);
         }
     }
     void IsRunning()
@@ -73,9 +86,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        _vectorMovement.x = Input.GetAxisRaw("Horizontal");
 
-        if (_vectorMovement.x == 0)
+        MovementSetUp();
+
+        if (_vectorMovement.x == 0 && !_isAttackTriggered)
         {
             SetState(MovementState.Idle);
         } else if (_vectorMovement.x == 1 || _vectorMovement.x == -1) {
@@ -87,24 +101,42 @@ public class PlayerMovement : MonoBehaviour
             SetState(MovementState.Walk);
         } 
         
+        SetState(currentState);
+    }
 
+    void MovementSetUp()
+    {
+        _vectorMovement.x = Input.GetAxisRaw("Horizontal");
+        _rb.MovePosition(_rb.position + _vectorMovement * movementSpeed * Time.fixedDeltaTime);
+        FlipCharacterSprite();
     }
 
     void SetState(MovementState s)
     {
+        if (s == currentState) return;
+        currentState = s;
+
         switch (s)
         {
             case MovementState.Idle:
+                Debug.Log("Is Idling");
                 Idling();
                 break;
             case MovementState.Walk:
+                Debug.Log("Is Walking");
                 Walking();
                 break;
             case MovementState.Run:
+                Debug.Log("Is Running");
                 Running();
                 break;
             case MovementState.Dash:
+                Debug.Log("Is Dashing");
                 StartCoroutine(Dashing());
+                break;
+            case MovementState.Attack1:
+                Debug.Log("Is Commencing Attack One");
+                StartCoroutine(AttackOne());
                 break;
         }
     }
@@ -114,9 +146,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Walking()
     {
-        _rb.MovePosition(_rb.position + _vectorMovement * movementSpeed * Time.fixedDeltaTime);
         _playerAnimatorManager.PlayWalkAnimation();
-        FlipCharacterSprite();
     }
 
     private void FlipCharacterSprite()
@@ -145,9 +175,7 @@ public class PlayerMovement : MonoBehaviour
             _isRunningMultplierActive = true;
         }
 
-        _rb.MovePosition(_rb.position + _vectorMovement * movementSpeed * Time.fixedDeltaTime);
         _playerAnimatorManager.PlayRunAnimation();
-        FlipCharacterSprite();
     }
 
     IEnumerator Dashing()
@@ -180,6 +208,18 @@ public class PlayerMovement : MonoBehaviour
         _dashTimer = dashCooldown;
         _isDashAvailable = true;
         SetState(MovementState.Idle);
+    }
+
+    IEnumerator AttackOne()
+    {
+        if(!_isAttackTriggered)
+        {
+            _playerAnimatorManager.PlayAttackOneAnimation();
+            _isAttackTriggered = true;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        _isAttackTriggered = false;
     }
 
 }

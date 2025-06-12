@@ -43,7 +43,8 @@ public class PlayerCombat : MonoBehaviour
                 Idling();
                 break;
             case CombatState.Attack1:
-                StartCoroutine(AttackOne());
+                //StartCoroutine(AttackOne());
+                AttackOne();
                 break;
             case CombatState.Attack2:
                 StartCoroutine(AttackTwo());
@@ -63,18 +64,24 @@ public class PlayerCombat : MonoBehaviour
         _playerAnimatorManager.PlayIdleAnimation();
     }
 
-    IEnumerator AttackOne()
+    //IEnumerator AttackOne()
+    //{
+    //    Debug.Log("Attak One Intiated");
+    //    _playerAnimatorManager.PlayAttackOneAnimation();
+
+    //    //if(Input.GetMouseButtonDown(0))
+    //    //{
+    //    //    SetState(CombatState.Attack2);
+    //    //}
+
+    //    yield return new WaitForSeconds(.1f);
+    //    SetState(CombatState.Idle);
+    //}
+
+    void AttackOne()
     {
         Debug.Log("Attak One Intiated");
         _playerAnimatorManager.PlayAttackOneAnimation();
-
-        //if(Input.GetMouseButtonDown(0))
-        //{
-        //    SetState(CombatState.Attack2);
-        //}
-
-        yield return new WaitForSeconds(.1f);
-        SetState(CombatState.Idle);
     }
 
     IEnumerator AttackTwo()
