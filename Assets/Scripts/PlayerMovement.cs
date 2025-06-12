@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Basic Movement Properties")]
     public float movementSpeed;
+    float _originalMovementSpeed;
     public float runSpeed;
 
     [Header("Dash Properties")]
@@ -27,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
 
     // dash timer cooldown
     bool _isDashAvailable;
+    bool _isDashing;
+    bool _isDashingActive;
     float _dashTimer;
 
     Rigidbody2D _rb;
@@ -50,18 +53,19 @@ public class PlayerMovement : MonoBehaviour
         _isRunning = false;
         _isRunningMultplierActive = false;
         _isDashAvailable = true;
+        _isDashing = false;
+
         _dashTimer = dashCooldown;
+        _isDashingActive = false;
+
         _isAttackTriggered = false;
+        _originalMovementSpeed = movementSpeed;
     }
 
     void Update()
     {
         IsRunning();
-        if(Input.GetKeyDown(KeyCode.Space) && _isDashAvailable)
-        {
-            SetState(MovementState.Dash);
-            return;
-        }
+        IsDashing();
 
         if(Input.GetMouseButtonDown(0))
         {
@@ -78,8 +82,22 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _isRunning = false;
-            movementSpeed /= runSpeed;
+            movementSpeed = _originalMovementSpeed;
             _isRunningMultplierActive = false;
+        }
+    }
+
+    void IsDashing()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _isDashing = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        { 
+            movementSpeed = _originalMovementSpeed;
+            _isDashingActive = false;
         }
     }
 
@@ -93,11 +111,19 @@ public class PlayerMovement : MonoBehaviour
         {
             SetState(MovementState.Idle);
         } else if (_vectorMovement.x == 1 || _vectorMovement.x == -1) {
+
             if(_isRunning)
             {
                 SetState(MovementState.Run);
                 return;
             }
+
+            if(_isDashing)
+            {
+                SetState(MovementState.Dash);
+                return;
+            }
+
             SetState(MovementState.Walk);
         } 
         
@@ -180,34 +206,15 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Dashing()
     {
-     
-        Debug.Log("Is Dashing");
-        //movementSpeed *= dashSpeed;
-        //_isDashAvailable = false;
-        _playerAnimatorManager.PlayDashAnimation();
-        _isDashAvailable = false;
-        yield return new WaitForSeconds(dashCooldown);
-        _isDashAvailable = true;
-        SetState(MovementState.Idle);
-
-
-        //movementSpeed /= dashSpeed;
-        //RunDashCooldown();
-    }
-
-    void RunDashCooldown()
-    {
-        _isDashAvailable = false;
-
-        while(_dashTimer > 0f)
+        if(!_isDashingActive)
         {
-            _dashTimer -= Time.fixedDeltaTime;
-            //Debug.Log(_dashTimer);
+            movementSpeed *= dashSpeed;
+            _isDashingActive = true;
         }
 
-        _dashTimer = dashCooldown;
-        _isDashAvailable = true;
-        SetState(MovementState.Idle);
+        _playerAnimatorManager.PlayDashAnimation();
+        yield return new WaitForSeconds(0.5f);
+        _isDashing = false;
     }
 
     IEnumerator AttackOne()

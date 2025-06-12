@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerAnimatorManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class PlayerAnimatorManager : MonoBehaviour
     public AnimationClip defendAnim;
 
 
-    Animator _animator;
+    Animator _animator;    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,5 +35,4 @@ public class PlayerAnimatorManager : MonoBehaviour
     public void PlayAttackTwoAnimation() => _animator.Play(attackTwoAnim.name);
     public void PlayAttackThreeAnimation() => _animator.Play(attackThreeAnim.name);
     public void PlayDefendAnimation() => _animator.Play(defendAnim.name);
-
 }
