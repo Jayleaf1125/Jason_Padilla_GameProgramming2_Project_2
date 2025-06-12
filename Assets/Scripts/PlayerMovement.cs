@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public enum MovementState
 {
@@ -11,9 +12,18 @@ public enum MovementState
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    [Header("Basic Movement Properties")]
     public float movementSpeed;
     public float runSpeed;
+
+    [Header("Dash Properties")]
+    public float dashSpeed;
+    public float dashDuration;
+    public float dashCooldown;
+
+    // dash timer cooldown
+    bool _isDashAvailable;
+    float _dashTimer;
 
     Rigidbody2D _rb;
     Vector2 _vectorMovement;
@@ -33,11 +43,17 @@ public class PlayerMovement : MonoBehaviour
         _isFacingRight = true;
         _isRunning = false;
         _isRunningMultplierActive = false;
+        _isDashAvailable = true;
+        _dashTimer = dashCooldown;
     }
 
     void Update()
     {
         IsRunning();
+        if(Input.GetKeyDown(KeyCode.Space) && _isDashAvailable)
+        {
+            SetState(MovementState.Dash);
+        }
     }
     void IsRunning()
     {
@@ -68,7 +84,6 @@ public class PlayerMovement : MonoBehaviour
                 SetState(MovementState.Run);
                 return;
             }
-
             SetState(MovementState.Walk);
         } 
         
@@ -88,14 +103,14 @@ public class PlayerMovement : MonoBehaviour
             case MovementState.Run:
                 Running();
                 break;
+            case MovementState.Dash:
+                StartCoroutine(Dashing());
+                break;
         }
     }
 
 
-    void Idling()
-    {
-        _playerAnimatorManager.PlayIdleAnimation();
-    }
+    void Idling() => _playerAnimatorManager.PlayIdleAnimation();
 
     void Walking()
     {
@@ -134,4 +149,37 @@ public class PlayerMovement : MonoBehaviour
         _playerAnimatorManager.PlayRunAnimation();
         FlipCharacterSprite();
     }
+
+    IEnumerator Dashing()
+    {
+     
+        Debug.Log("Is Dashing");
+        //movementSpeed *= dashSpeed;
+        //_isDashAvailable = false;
+        _playerAnimatorManager.PlayDashAnimation();
+        _isDashAvailable = false;
+        yield return new WaitForSeconds(dashCooldown);
+        _isDashAvailable = true;
+        SetState(MovementState.Idle);
+
+
+        //movementSpeed /= dashSpeed;
+        //RunDashCooldown();
+    }
+
+    void RunDashCooldown()
+    {
+        _isDashAvailable = false;
+
+        while(_dashTimer > 0f)
+        {
+            _dashTimer -= Time.fixedDeltaTime;
+            //Debug.Log(_dashTimer);
+        }
+
+        _dashTimer = dashCooldown;
+        _isDashAvailable = true;
+        SetState(MovementState.Idle);
+    }
+
 }
