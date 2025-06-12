@@ -538,6 +538,7 @@ GameObject:
   - component: {fileID: 1948326950}
   - component: {fileID: 1948326954}
   - component: {fileID: 1948326955}
+  - component: {fileID: 1948326956}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -586,6 +587,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   runSpeed: 2
+  dashSpeed: 2
+  dashDuration: 0.5
+  dashCooldown: 5
 --- !u!212 &1948326952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -674,6 +678,10 @@ MonoBehaviour:
   runAnim: {fileID: 7400000, guid: 84f776cea0b8e8b4b92631b890537e7d, type: 2}
   jumpAnim: {fileID: 7400000, guid: d687c11eb5df0c849953ac473c8a3ffc, type: 2}
   dashAnim: {fileID: 7400000, guid: d20d02555469b1d44bb579104071dd30, type: 2}
+  attackOneAnim: {fileID: 7400000, guid: 12203bd251e69f045a2dc18ca13f87aa, type: 2}
+  attackTwoAnim: {fileID: 7400000, guid: 380e7530ebb4e9a45a90a3e7eb186a0b, type: 2}
+  attackThreeAnim: {fileID: 7400000, guid: 9da12cada631a2c4fbf077667a2e2358, type: 2}
+  defendAnim: {fileID: 7400000, guid: 58ff1a0c3155183478589c4889af65de, type: 2}
 --- !u!95 &1948326955
 Animator:
   serializedVersion: 7
@@ -696,6 +704,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1948326956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948326948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e819b232f80571f4d963395535020ad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
