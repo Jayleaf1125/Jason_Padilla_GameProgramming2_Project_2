@@ -15,6 +15,7 @@ public class PlayerAnimatorManager : MonoBehaviour
     public AnimationClip attackTwoAnim;
     public AnimationClip attackThreeAnim;
     public AnimationClip defendAnim;
+    public AnimationClip defendSuccessfulAnim;
 
 
     Animator _animator;    
@@ -35,4 +36,5 @@ public class PlayerAnimatorManager : MonoBehaviour
     public void PlayAttackTwoAnimation() => _animator.Play(attackTwoAnim.name);
     public void PlayAttackThreeAnimation() => _animator.Play(attackThreeAnim.name);
     public void PlayDefendAnimation() => _animator.Play(defendAnim.name);
+    public void PlayDefendSuccessfulAnimation() => _animator.Play(defendSuccessfulAnim.name);
 }

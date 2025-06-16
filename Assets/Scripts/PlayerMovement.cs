@@ -10,7 +10,8 @@ public enum PlayerState
     Dash,
     Attack1,
     Attack2,
-    Attack3
+    Attack3,
+    Defend
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -28,6 +29,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Current State")]
     public PlayerState currentState;
 
+    [Header("Defend Picture")]
+    public Sprite defendPic;
+
     // dash timer cooldown
     bool _isDashAvailable;
     bool _isDashing;
@@ -37,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D _rb;
     Vector2 _vectorMovement;
     PlayerAnimatorManager _playerAnimatorManager;
+    SpriteRenderer _sr;
 
     bool _isFacingRight;
 
@@ -49,6 +54,11 @@ public class PlayerMovement : MonoBehaviour
     // Combat Variables
     bool _isAttackTwoReady = false;
 
+    float _attackTwoTimer = 0f;
+    public float _attackTwoInterval;
+
+    bool _isDefending = false;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        _sr = GetComponent<SpriteRenderer>();   
 
         _isFacingRight = true;
         _isRunning = false;
@@ -72,18 +83,14 @@ public class PlayerMovement : MonoBehaviour
 
         _originalMovementSpeed = movementSpeed;
 
-
     }
 
     void Update()
     {
         IsRunning();
         IsDashing();
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            SetState(PlayerState.Attack1);
-        }
+        IsAttackOne();
+        IsDefending();
     }
     void IsRunning()
     {
@@ -97,6 +104,27 @@ public class PlayerMovement : MonoBehaviour
             _isRunning = false;
             movementSpeed = _originalMovementSpeed;
             _isRunningMultplierActive = false;
+        }
+    }
+
+    void IsAttackOne()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            SetState(PlayerState.Attack1);
+        }
+    }
+
+    void IsDefending()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            SetState(PlayerState.Defend);
+        }
+
+        if(Input.GetMouseButtonUp(1))
+        {
+            _isDefending = false;
         }
     }
 
@@ -120,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
         MovementSetUp();
 
-        if (_vectorMovement.x == 0 && !_isAttackOneTriggered)
+        if (_vectorMovement.x == 0 && !_isAttackOneTriggered && !_isAttackTwoReady && !_isDefending)
         {
             SetState(PlayerState.Idle);
         } else if (_vectorMovement.x == 1 || _vectorMovement.x == -1) {
@@ -179,11 +207,16 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerState.Attack2:
                 Debug.Log("Is Commencing Attack Two");
-                StartCoroutine(AttackTwo());
+                //StartCoroutine(AttackTwo());
+                AttackTwo();
                 break;
             case PlayerState.Attack3:
                 Debug.Log("Is Commencing Attack Three");
                 //StartCoroutine(AttackThree());
+                break;
+            case PlayerState.Defend:
+                _isDefending = true;
+                Defend();
                 break;
         }
     }
@@ -244,39 +277,55 @@ public class PlayerMovement : MonoBehaviour
         {
             _playerAnimatorManager.PlayAttackOneAnimation();
             _isAttackOneTriggered = true;
-            _isAttackTwoReady = true;
         }
 
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(NextAttackInterval("Two"));
+        //StartCoroutine(NextAttackInterval());
+        //SetState(PlayerState.Attack2);
         _isAttackOneTriggered = false;
     }
 
-    IEnumerator NextAttackInterval(string nextAttack)
+    void AttackTwo()
+    {
+        Debug.Log("Is Attack Two");
+        _isAttackTwoReady = false;
+        SetState(PlayerState.Idle);
+}
+
+
+    IEnumerator NextAttackInterval()
     {
         Debug.Log("Next Attack Interval Started");
-        if (Input.GetMouseButtonDown(0) && nextAttack == "two")
+        _isAttackOneTriggered = false;
+        _isAttackTwoReady = true;
+
+        if (Input.GetMouseButtonDown(0) && _isAttackTwoReady)
         {
+            Debug.Log("Nice");
             SetState(PlayerState.Attack2);
         }
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(_attackTwoInterval);
 
     }
 
-    IEnumerator AttackTwo()
+    //IEnumerator AttackTwo()
+    //{
+    //    if (!_isAttackTwoTriggered)
+    //    {
+    //        _playerAnimatorManager.PlayAttackTwoAnimation();
+    //        _isAttackTwoTriggered = true;
+    //        //_isAttackTwoReady = true;
+    //    }
+
+    //    yield return new WaitForSeconds(0.5f);
+    //    StartCoroutine(NextAttackInterval("Two"));a
+    //    _isAttackTwoTriggered = false;
+    //}
+
+    void Defend()
     {
-        if (!_isAttackTwoTriggered)
-        {
-            _playerAnimatorManager.PlayAttackTwoAnimation();
-            _isAttackTwoTriggered = true;
-            //_isAttackTwoReady = true;
-        }
-
-        yield return new WaitForSeconds(0.5f);
-        StartCoroutine(NextAttackInterval("Two"));
-        _isAttackTwoTriggered = false;
+        _playerAnimatorManager.PlayDefendSuccessfulAnimation();
     }
-
 
 
 }

@@ -382,7 +382,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0959, y: -2.38, z: 0}
-  m_LocalScale: {x: 17.804531, y: 1, z: 1}
+  m_LocalScale: {x: 75.00159, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -399,6 +399,7 @@ GameObject:
   - component: {fileID: 1360399216}
   - component: {fileID: 1360399215}
   - component: {fileID: 1360399214}
+  - component: {fileID: 1360399218}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -524,6 +525,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1360399218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360399213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d5717d8c654044b9b0d13ea7eef6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1948326953}
+  x: 0
+  y: 0
+  z: -10
 --- !u!1 &1948326948
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,6 +607,9 @@ MonoBehaviour:
   dashSpeed: 2
   dashDuration: 0.5
   dashCooldown: 5
+  currentState: 0
+  defendPic: {fileID: 21300000, guid: a9b7fc448e4f9d641bd7487a34758ed9, type: 2}
+  _attackTwoInterval: 5
 --- !u!212 &1948326952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -682,6 +702,7 @@ MonoBehaviour:
   attackTwoAnim: {fileID: 7400000, guid: 380e7530ebb4e9a45a90a3e7eb186a0b, type: 2}
   attackThreeAnim: {fileID: 7400000, guid: 9da12cada631a2c4fbf077667a2e2358, type: 2}
   defendAnim: {fileID: 7400000, guid: 58ff1a0c3155183478589c4889af65de, type: 2}
+  defendSuccessfulAnim: {fileID: 7400000, guid: 58ff1a0c3155183478589c4889af65de, type: 2}
 --- !u!95 &1948326955
 Animator:
   serializedVersion: 7
