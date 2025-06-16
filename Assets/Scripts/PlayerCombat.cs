@@ -36,7 +36,7 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator Test(Collider2D obj)
     {
         obj.GetComponent<SpriteRenderer>().color = Color.red;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         obj.GetComponent<SpriteRenderer>().color = Color.white;
     }
 

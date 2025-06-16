@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum PlayerState
 {
@@ -11,7 +12,8 @@ public enum PlayerState
     Attack1,
     Attack2,
     Attack3,
-    Defend
+    Defend,
+    DefendSuccessful
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -58,6 +60,9 @@ public class PlayerMovement : MonoBehaviour
     public float _attackTwoInterval;
 
     bool _isDefending = false;
+
+    public List<string> AttackLog;
+    public static bool  canMove = true;
 
 
 
@@ -145,8 +150,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        MovementSetUp();
+        if (canMove) MovementSetUp();
 
         if (_vectorMovement.x == 0 && !_isAttackOneTriggered && !_isAttackTwoReady && !_isDefending)
         {
@@ -187,34 +191,43 @@ public class PlayerMovement : MonoBehaviour
         {
             case PlayerState.Idle:
                 Debug.Log("Is Idling");
+                canMove = true;
+                //StartCoroutine(ClearAttackLog(.5f));
                 Idling();
                 break;
             case PlayerState.Walk:
+                canMove = true;
                 Debug.Log("Is Walking");
                 Walking();
                 break;
             case PlayerState.Run:
+                canMove = true;
                 Debug.Log("Is Running");
                 Running();
                 break;
             case PlayerState.Dash:
+                canMove = true;
                 Debug.Log("Is Dashing");
                 StartCoroutine(Dashing());
                 break;
             case PlayerState.Attack1:
+                canMove = false;
                 Debug.Log("Is Commencing Attack One");
                 StartCoroutine(AttackOne());
                 break;
             case PlayerState.Attack2:
+                canMove = false;
                 Debug.Log("Is Commencing Attack Two");
                 //StartCoroutine(AttackTwo());
                 AttackTwo();
                 break;
             case PlayerState.Attack3:
+                canMove = false;
                 Debug.Log("Is Commencing Attack Three");
                 //StartCoroutine(AttackThree());
                 break;
             case PlayerState.Defend:
+                canMove = false;
                 _isDefending = true;
                 Defend();
                 break;
@@ -324,8 +337,25 @@ public class PlayerMovement : MonoBehaviour
 
     void Defend()
     {
-        _playerAnimatorManager.PlayDefendSuccessfulAnimation();
+        _playerAnimatorManager.PlayDefendAnimation();
     }
 
+
+
+    public IEnumerator LogAttack(PlayerState attack, float time)
+    {
+        AttackLog.Add(currentState.ToString());
+        yield return new WaitForSeconds(time);
+        //search the list for the oldest occurent of attackState and remove it
+
+    }
+
+    public IEnumerator ClearAttackLog(float time)
+    {
+        yield return new WaitForSeconds(time);
+        AttackLog.Clear();
+    }
+
+    public PlayerState GetPlayerState() => currentState;
 
 }

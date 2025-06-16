@@ -740,6 +740,7 @@ GameObject:
   - component: {fileID: 1948326954}
   - component: {fileID: 1948326955}
   - component: {fileID: 1948326956}
+  - component: {fileID: 1948326957}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -794,6 +795,7 @@ MonoBehaviour:
   currentState: 0
   defendPic: {fileID: 21300000, guid: a9b7fc448e4f9d641bd7487a34758ed9, type: 2}
   _attackTwoInterval: 5
+  AttackLog: []
 --- !u!212 &1948326952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -886,8 +888,11 @@ MonoBehaviour:
   attackOneAnim: {fileID: 7400000, guid: 12203bd251e69f045a2dc18ca13f87aa, type: 2}
   attackTwoAnim: {fileID: 7400000, guid: 380e7530ebb4e9a45a90a3e7eb186a0b, type: 2}
   attackThreeAnim: {fileID: 7400000, guid: 9da12cada631a2c4fbf077667a2e2358, type: 2}
-  defendAnim: {fileID: 7400000, guid: 58ff1a0c3155183478589c4889af65de, type: 2}
-  defendSuccessfulAnim: {fileID: 7400000, guid: 58ff1a0c3155183478589c4889af65de, type: 2}
+  defendAnim: {fileID: 7400000, guid: 7b682b92f75cd0e46943709aff7b7dd4, type: 2}
+  defendSuccessfulAnim: {fileID: 7400000, guid: 8016a402c1686f349ba66be8468068dd, type: 2}
+  healingAnim: {fileID: 7400000, guid: 5fe169811d245124eba86358adfebd8b, type: 2}
+  takingDamageAnim: {fileID: 7400000, guid: c2d0825ece660bb4c9cef8e93a4c8f9e, type: 2}
+  deathAnim: {fileID: 7400000, guid: 5d251b3ba3aab0a4ca5dc045c90f3adf, type: 2}
 --- !u!95 &1948326955
 Animator:
   serializedVersion: 7
@@ -927,6 +932,19 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1948326957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948326948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 609ad74e07c537444b39d9cbb755533c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
