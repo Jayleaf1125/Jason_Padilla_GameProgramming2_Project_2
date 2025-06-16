@@ -6,6 +6,7 @@ public class HealthSystem : MonoBehaviour
     float _currentHealth;
     [SerializeField] float _maxHealth;
     PlayerAnimatorManager _playerAnimatorManager;
+
     // public bool isPlayerHealth
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
