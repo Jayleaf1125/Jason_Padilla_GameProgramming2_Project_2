@@ -45,6 +45,7 @@ public class HealthSystem : MonoBehaviour
                 return;
             } else
             {
+                GetComponent<EnemyCombat>().SetIsAttackOneTriggered(false);
                 StartCoroutine(PlayEnemyDeath());
                 return;
             }
@@ -57,7 +58,7 @@ public class HealthSystem : MonoBehaviour
     IEnumerator PlayEnemyDeath()
     {
         _enemyAnimatorManager.PlayDeathAnimation();
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(.75f);
         Destroy(this.gameObject);
     }
 

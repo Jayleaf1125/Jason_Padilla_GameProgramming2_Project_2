@@ -13,30 +13,22 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void HandleAttackOne()
     {
-        Debug.Log("Hello, I'm Attack One");
         Collider2D enemy = Physics2D.OverlapCircle(attackOnePos.position, attackOneRange, enemyLayer);
+        GameObject enemyObj = enemy.transform.parent.gameObject; ;
 
-        if (enemy == null)
+        if (enemyObj == null)
         {
             Debug.Log("Enemy Not Found");
             return;
         }
 
-        Debug.Log(enemy.gameObject.tag);
-
-        enemy.GetComponent<HealthSystem>().DecereaseHealth(25);
-        StartCoroutine(Test(enemy));
+        enemyObj.GetComponent<HealthSystem>().DecereaseHealth(25);
+        StartCoroutine(Test(enemyObj));
     }
 
-    IEnumerator Test(Collider2D obj)
+    IEnumerator Test(GameObject obj)
     {
         obj.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.5f);

@@ -476,6 +476,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
+  _isAttackOneTriggered: 0
 --- !u!1 &1360399213
 GameObject:
   m_ObjectHideFlags: 0

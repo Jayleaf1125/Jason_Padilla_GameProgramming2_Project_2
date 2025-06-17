@@ -8,7 +8,7 @@ public class EnemyCombat : MonoBehaviour
     public LayerMask playerLayer;
 
     EnemyAnimatorManager _enemyAnimatorManager;
-    bool _isAttackOneTriggered = false;
+    public bool _isAttackOneTriggered = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,11 +16,7 @@ public class EnemyCombat : MonoBehaviour
         _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void SetIsAttackOneTriggered(bool boolean) => _isAttackOneTriggered = boolean;
 
     private void OnDrawGizmos()
     {

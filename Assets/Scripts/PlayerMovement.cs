@@ -190,40 +190,33 @@ public class PlayerMovement : MonoBehaviour
         switch (s)
         {
             case PlayerState.Idle:
-                Debug.Log("Is Idling");
                 canMove = true;
                 //StartCoroutine(ClearAttackLog(.5f));
                 Idling();
                 break;
             case PlayerState.Walk:
                 canMove = true;
-                Debug.Log("Is Walking");
                 Walking();
                 break;
             case PlayerState.Run:
                 canMove = true;
-                Debug.Log("Is Running");
                 Running();
                 break;
             case PlayerState.Dash:
                 canMove = true;
-                Debug.Log("Is Dashing");
                 StartCoroutine(Dashing());
                 break;
             case PlayerState.Attack1:
                 canMove = false;
-                Debug.Log("Is Commencing Attack One");
                 StartCoroutine(AttackOne());
                 break;
             case PlayerState.Attack2:
                 canMove = false;
-                Debug.Log("Is Commencing Attack Two");
                 //StartCoroutine(AttackTwo());
                 AttackTwo();
                 break;
             case PlayerState.Attack3:
                 canMove = false;
-                Debug.Log("Is Commencing Attack Three");
                 //StartCoroutine(AttackThree());
                 break;
             case PlayerState.Defend:
@@ -300,40 +293,9 @@ public class PlayerMovement : MonoBehaviour
 
     void AttackTwo()
     {
-        Debug.Log("Is Attack Two");
         _isAttackTwoReady = false;
         SetState(PlayerState.Idle);
-}
-
-
-    IEnumerator NextAttackInterval()
-    {
-        Debug.Log("Next Attack Interval Started");
-        _isAttackOneTriggered = false;
-        _isAttackTwoReady = true;
-
-        if (Input.GetMouseButtonDown(0) && _isAttackTwoReady)
-        {
-            Debug.Log("Nice");
-            SetState(PlayerState.Attack2);
-        }
-        yield return new WaitForSeconds(_attackTwoInterval);
-
     }
-
-    //IEnumerator AttackTwo()
-    //{
-    //    if (!_isAttackTwoTriggered)
-    //    {
-    //        _playerAnimatorManager.PlayAttackTwoAnimation();
-    //        _isAttackTwoTriggered = true;
-    //        //_isAttackTwoReady = true;
-    //    }
-
-    //    yield return new WaitForSeconds(0.5f);
-    //    StartCoroutine(NextAttackInterval("Two"));a
-    //    _isAttackTwoTriggered = false;
-    //}
 
     void Defend()
     {
