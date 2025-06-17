@@ -27,8 +27,8 @@ public class HealthSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J)) IncreaseHealth(10);
-        if (Input.GetKeyDown(KeyCode.K)) DecereaseHealth(10);
+        //if (Input.GetKeyDown(KeyCode.J)) IncreaseHealth(10);
+        //if (Input.GetKeyDown(KeyCode.K)) DecereaseHealth(10);
     }
 
     public float GetCurrentHealth() => _currentHealth;
@@ -45,16 +45,22 @@ public class HealthSystem : MonoBehaviour
                 return;
             } else
             {
-                _enemyAnimatorManager.PlayDeathAnimation();
+                StartCoroutine(PlayEnemyDeath());
                 return;
             }
         }
 
-        Debug.Log($"Current Health is {remainingHealth}");
-
         _currentHealth = remainingHealth;
         StartCoroutine(TakingDamageAni());
     }
+
+    IEnumerator PlayEnemyDeath()
+    {
+        _enemyAnimatorManager.PlayDeathAnimation();
+        yield return new WaitForSeconds(3.5f);
+        Destroy(this.gameObject);
+    }
+
 
     IEnumerator TakingDamageAni()
     {
@@ -69,7 +75,7 @@ public class HealthSystem : MonoBehaviour
         {
             //EnemyMovement.canMove = false;
             _enemyAnimatorManager.SetEnemyHurtingTrue();
-            yield return new WaitForSeconds(0.125f);
+            yield return new WaitForSeconds(0.25f);
             //EnemyMovement.canMove = true;
             _enemyAnimatorManager.SetEnemyHurtingFalse();
         }
@@ -81,8 +87,6 @@ public class HealthSystem : MonoBehaviour
         float healedHealth = _currentHealth + amount;
 
         if (healedHealth > _maxHealth) return;
-
-        Debug.Log($"Current Health is {healedHealth}");
 
         _currentHealth = healedHealth;
         StartCoroutine(HealingAni());   

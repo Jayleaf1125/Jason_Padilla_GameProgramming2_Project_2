@@ -32,4 +32,7 @@ public class EnemyAnimatorManager : MonoBehaviour
     public void PlayDeathAnimation() => _animator.Play(deathAnim.name);
     public void SetEnemyHurtingTrue() => _animator.SetBool("isHurting", true);
     public void SetEnemyHurtingFalse() => _animator.SetBool("isHurting", false);
+    public void SetEnemyAttackingTrue() => _animator.SetBool("isAttacking", true);
+    public void SetEnemyAttackingFalse() => _animator.SetBool("isAttacking", false);
+
 }

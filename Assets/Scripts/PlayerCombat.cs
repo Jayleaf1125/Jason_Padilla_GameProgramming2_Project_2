@@ -30,6 +30,8 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
+        Debug.Log(enemy.gameObject.tag);
+
         enemy.GetComponent<HealthSystem>().DecereaseHealth(25);
         StartCoroutine(Test(enemy));
     }
