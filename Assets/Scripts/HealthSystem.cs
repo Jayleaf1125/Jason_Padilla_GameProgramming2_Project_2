@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -8,12 +9,16 @@ public class HealthSystem : MonoBehaviour
     PlayerAnimatorManager _playerAnimatorManager;
     EnemyAnimatorManager _enemyAnimatorManager;
 
+    public Slider healthbarUI;
+
     public bool isPlayerHealth = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _currentHealth = _maxHealth;    
+        _currentHealth = _maxHealth;
+        healthbarUI.maxValue = _maxHealth;
+        healthbarUI.value = _currentHealth;
 
         if (isPlayerHealth)
         {
@@ -22,6 +27,7 @@ public class HealthSystem : MonoBehaviour
         {
             _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
         }
+
     }
 
     // Update is called once per frame
@@ -39,7 +45,8 @@ public class HealthSystem : MonoBehaviour
 
         if (remainingHealth <= 0)
         {
-            if(isPlayerHealth)
+            healthbarUI.value = 0;
+            if (isPlayerHealth)
             {
                 _playerAnimatorManager.PlayDeathAnimation();
                 return;
@@ -52,6 +59,7 @@ public class HealthSystem : MonoBehaviour
         }
 
         _currentHealth = remainingHealth;
+        healthbarUI.value = _currentHealth;
         StartCoroutine(TakingDamageAni());
     }
 
@@ -90,6 +98,7 @@ public class HealthSystem : MonoBehaviour
         if (healedHealth > _maxHealth) return;
 
         _currentHealth = healedHealth;
+        healthbarUI.value = _currentHealth;
         StartCoroutine(HealingAni());   
     }
 

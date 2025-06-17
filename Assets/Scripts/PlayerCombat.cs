@@ -16,19 +16,21 @@ public class PlayerCombat : MonoBehaviour
     public void HandleAttackOne()
     {
         Collider2D enemy = Physics2D.OverlapCircle(attackOnePos.position, attackOneRange, enemyLayer);
-        GameObject enemyObj = enemy.transform.parent.gameObject; ;
+        //GameObject enemyObj = enemy.transform.parent.gameObject;
 
-        if (enemyObj == null)
+        Debug.Log(enemy.tag);
+
+        if (enemy == null)
         {
             Debug.Log("Enemy Not Found");
             return;
         }
 
-        enemyObj.GetComponent<HealthSystem>().DecereaseHealth(25);
-        StartCoroutine(Test(enemyObj));
+        enemy.GetComponent<HealthSystem>().DecereaseHealth(25);
+        StartCoroutine(Test(enemy));
     }
 
-    IEnumerator Test(GameObject obj)
+    IEnumerator Test(Collider2D obj)
     {
         obj.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.5f);
