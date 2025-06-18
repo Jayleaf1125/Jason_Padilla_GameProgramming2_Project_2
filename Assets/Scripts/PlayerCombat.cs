@@ -33,7 +33,7 @@ public class PlayerCombat : MonoBehaviour
         if (enemy.CompareTag("Detection") || enemy.name == "Detection Range")
         {
             _audioManager.PlaySwordHitSound();
-            enemy.GetComponent<HealthSystem>().DecereaseHealth(damage);
+            enemy.GetComponentInParent<HealthSystem>().DecereaseHealth(damage);
             StartCoroutine(Test(enemy));
             return;
         }

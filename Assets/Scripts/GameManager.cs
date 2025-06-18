@@ -1,4 +1,3 @@
-using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +12,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject enemyPrefab;
     public GameObject enemyHealthbarPrefab;
-    public Preset enemyHealthbarLocationPreset;
     int enemyCount = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -53,7 +51,7 @@ public class GameManager : MonoBehaviour
         
 
         RectTransform rect = healthbar.GetComponent<RectTransform>();
-        enemyHealthbarLocationPreset.ApplyTo(rect);    
+        rect.position = new Vector3(545, 306, 20);
     }
 
     private void OnDrawGizmos()

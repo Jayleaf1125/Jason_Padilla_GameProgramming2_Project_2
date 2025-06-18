@@ -2570,7 +2570,6 @@ MonoBehaviour:
   bossSpawner: {fileID: 360555654}
   enemyPrefab: {fileID: 886427186469164926, guid: 7e50c487c5523e346b52e21f086d999a, type: 3}
   enemyHealthbarPrefab: {fileID: 202284147245139261, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
-  enemyHealthbarLocationPreset: {fileID: 2655988077585873504, guid: 63ef5fe63c049284db727a972b6b11c6, type: 2}
 --- !u!1 &1893835314
 GameObject:
   m_ObjectHideFlags: 0
@@ -2928,7 +2927,7 @@ Transform:
   m_GameObject: {fileID: 1948326948}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -155.53, y: -1.8, z: 0}
+  m_LocalPosition: {x: -87.1, y: -1.2, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3364,7 +3363,8 @@ PrefabInstance:
       propertyPath: damage
       value: 10
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7330371909933644838, guid: 7e50c487c5523e346b52e21f086d999a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
