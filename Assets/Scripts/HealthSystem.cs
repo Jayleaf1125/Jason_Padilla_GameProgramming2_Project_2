@@ -30,12 +30,6 @@ public class HealthSystem : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.J)) IncreaseHealth(10);
-        //if (Input.GetKeyDown(KeyCode.K)) DecereaseHealth(10);
-    }
 
     public float GetCurrentHealth() => _currentHealth;
 
@@ -46,6 +40,7 @@ public class HealthSystem : MonoBehaviour
         if (remainingHealth <= 0)
         {
             healthbarUI.value = 0;
+            Destroy(healthbarUI);
             if (isPlayerHealth)
             {
                 _playerAnimatorManager.PlayDeathAnimation();

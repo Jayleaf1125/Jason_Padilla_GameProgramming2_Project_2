@@ -57,6 +57,7 @@ public class EnemyCombat : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             _isAttackOneTriggered = true;
+            this.gameObject.GetComponent<HealthSystem>().healthbarUI.gameObject.SetActive(true);
             StartCoroutine(AttackOne());
         }
     }
@@ -66,6 +67,7 @@ public class EnemyCombat : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             _isAttackOneTriggered = false;
+            this.gameObject.GetComponent<HealthSystem>().healthbarUI.gameObject.SetActive(false);
         }
     }
 

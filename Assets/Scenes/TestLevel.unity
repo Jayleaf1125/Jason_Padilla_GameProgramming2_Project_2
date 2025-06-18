@@ -384,7 +384,7 @@ Transform:
   m_GameObject: {fileID: 360555654}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 129.8, y: -5.6, z: 0}
+  m_LocalPosition: {x: 83.7, y: -5.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -946,7 +946,7 @@ Transform:
   m_GameObject: {fileID: 776822216}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 75.1, y: -4.4, z: 0}
+  m_LocalPosition: {x: 37.7, y: -5.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1111,7 +1111,7 @@ Transform:
   m_GameObject: {fileID: 1258405958}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34, y: -5.7, z: 0}
+  m_LocalPosition: {x: -2.9, y: -5.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1483,6 +1483,9 @@ MonoBehaviour:
   spawner1: {fileID: 1258405958}
   spawner2: {fileID: 776822216}
   bossSpawner: {fileID: 360555654}
+  enemyPrefab: {fileID: 886427186469164926, guid: 7e50c487c5523e346b52e21f086d999a, type: 3}
+  enemyHealthbarPrefab: {fileID: 202284147245139261, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
+  enemyHealthbarLocationPreset: {fileID: 2655988077585873504, guid: 63ef5fe63c049284db727a972b6b11c6, type: 2}
 --- !u!1 &1932200999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,13 +1849,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Healthbar
       objectReference: {fileID: 0}
-    - target: {fileID: 7740657040211047073, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 202284147245139261, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7740657040211047073, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7740657040211047073, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9065702507679439314, guid: 2557e44b87299bf4c855b079952f1a27, type: 3}
       propertyPath: m_Pivot.x
