@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     AudioSource swordHitSoung;
     AudioSource bgSoung;
     AudioSource playerTakingDamageSoung;
+    AudioSource enemyDeathSound;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,7 +23,10 @@ public class AudioManager : MonoBehaviour
         playerDeathSoung = allAudioSources[3];
         swordClashSoung = allAudioSources[4];
         winningSoung = allAudioSources[5];
-        playerTakingDamageSoung = allAudioSources[6];
+        swordHitSoung = allAudioSources[6];
+        bgSoung = allAudioSources[7];
+        playerTakingDamageSoung = allAudioSources[8];
+        enemyDeathSound = allAudioSources[9];
     }
 
     public void PlayDeathSound() => deathSound.Play();
@@ -34,4 +38,5 @@ public class AudioManager : MonoBehaviour
     public void PlaySwordHitSound() => swordHitSoung.Play();
     public void PlayBackgroundMusic() => bgSoung.Play();
     public void PlayPlayerTakingDamage() => playerTakingDamageSoung.Play();
+    public void PlayEnemyDeath() => enemyDeathSound.Play();
 }

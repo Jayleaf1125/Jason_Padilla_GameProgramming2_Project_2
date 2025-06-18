@@ -1,6 +1,5 @@
 using UnityEditor.Presets;
 using UnityEngine;
-//using UnityEngine.UIElements;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -15,7 +14,6 @@ public class GameManager : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject enemyHealthbarPrefab;
     public Preset enemyHealthbarLocationPreset;
-
     int enemyCount = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -38,6 +36,7 @@ public class GameManager : MonoBehaviour
         {
             enemy.GetComponent<HealthSystem>().SetMaxHealth(200);
             enemy.GetComponent<EnemyCombat>().SetDamaage(20);
+            enemy.GetComponent<SpriteRenderer>().color = Color.black;
         } else
         {
             enemy.GetComponent<EnemyCombat>().SetDamaage(10);

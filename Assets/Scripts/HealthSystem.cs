@@ -56,6 +56,7 @@ public class HealthSystem : MonoBehaviour
                 return;
             } else
             {
+                _audioManager.PlayEnemyDeath();
                 GetComponent<EnemyCombat>().SetIsAttackOneTriggered(false);
                 StartCoroutine(PlayEnemyDeath());
                 return;
@@ -109,14 +110,13 @@ public class HealthSystem : MonoBehaviour
 
         _currentHealth = healedHealth;
         healthbarUI.value = _currentHealth;
-        StartCoroutine(HealingAni());   
     }
 
     IEnumerator HealingAni()
     {
         PlayerMovement.canMove = false;
         _playerAnimatorManager.SetPlayerHealingTrue();
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1f);
         PlayerMovement.canMove = true;
         _playerAnimatorManager.SetPlayerHealingFalse();
     }

@@ -12,7 +12,7 @@ public class CameraFollowPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Script: https://discussions.unity.com/t/how-to-get-camera-to-follow-player-2d/128194
+        // Script Credit: https://discussions.unity.com/t/how-to-get-camera-to-follow-player-2d/128194
         //transform.position = new Vector3(player.position.x + 6, 0, -10); // Camera follows the player but 6 to the right
         transform.position = new Vector3(player.position.x + x, y, z); // Camera follows the player but 6 to the right
     }

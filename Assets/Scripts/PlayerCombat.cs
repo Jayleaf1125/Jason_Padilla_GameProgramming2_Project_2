@@ -20,9 +20,21 @@ public class PlayerCombat : MonoBehaviour
     {
         Collider2D enemy = Physics2D.OverlapCircle(attackOnePos.position, attackOneRange, enemyLayer) ?? null;
 
+        Debug.Log(enemy);
+        Debug.Log(enemy.name);
+        Debug.Log(enemy.tag);
+
         if (enemy == null)
         {
             Debug.Log("Enemy Not Found");
+            return;
+        }
+
+        if (enemy.CompareTag("Detection") || enemy.name == "Detection Range")
+        {
+            _audioManager.PlaySwordHitSound();
+            enemy.GetComponent<HealthSystem>().DecereaseHealth(damage);
+            StartCoroutine(Test(enemy));
             return;
         }
 
@@ -33,9 +45,10 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator Test(Collider2D obj)
     {
+        var originalColor = obj.GetComponent<SpriteRenderer>().color;
         obj.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.5f);
-        obj.GetComponent<SpriteRenderer>().color = Color.white;
+        obj.GetComponent<SpriteRenderer>().color = originalColor;
     }
 
     private void OnDrawGizmos()

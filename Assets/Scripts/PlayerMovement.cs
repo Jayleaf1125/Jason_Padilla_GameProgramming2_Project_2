@@ -31,19 +31,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Current State")]
     public PlayerState currentState;
 
-    [Header("Defend Picture")]
-    public Sprite defendPic;
-
     // dash timer cooldown
-    bool _isDashAvailable;
     bool _isDashing;
     bool _isDashingActive;
-    float _dashTimer;
 
     Rigidbody2D _rb;
     Vector2 _vectorMovement;
     PlayerAnimatorManager _playerAnimatorManager;
-    SpriteRenderer _sr;
 
     bool _isFacingRight;
 
@@ -51,12 +45,9 @@ public class PlayerMovement : MonoBehaviour
     bool _isRunningMultplierActive;
 
     bool _isAttackOneTriggered;
-    bool _isAttackTwoTriggered;
-    bool _isAttackThreeTriggered;
     // Combat Variables
     bool _isAttackTwoReady = false;
 
-    float _attackTwoTimer = 0f;
     public float _attackTwoInterval;
 
     bool _isDefending = false;
@@ -71,20 +62,15 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
-        _sr = GetComponent<SpriteRenderer>();   
 
         _isFacingRight = true;
         _isRunning = false;
         _isRunningMultplierActive = false;
-        _isDashAvailable = true;
         _isDashing = false;
 
-        _dashTimer = dashCooldown;
         _isDashingActive = false;
 
         _isAttackOneTriggered = false;
-        _isAttackTwoTriggered = false;
-        _isAttackThreeTriggered = false;
 
         _originalMovementSpeed = movementSpeed;
 
@@ -191,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
         {
             case PlayerState.Idle:
                 canMove = true;
-                //StartCoroutine(ClearAttackLog(.5f));
                 Idling();
                 break;
             case PlayerState.Walk:
@@ -212,12 +197,10 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerState.Attack2:
                 canMove = false;
-                //StartCoroutine(AttackTwo());
                 AttackTwo();
                 break;
             case PlayerState.Attack3:
                 canMove = false;
-                //StartCoroutine(AttackThree());
                 break;
             case PlayerState.Defend:
                 canMove = false;
@@ -286,8 +269,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.5f);
-        //StartCoroutine(NextAttackInterval());
-        //SetState(PlayerState.Attack2);
         _isAttackOneTriggered = false;
     }
 
