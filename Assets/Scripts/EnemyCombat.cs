@@ -9,11 +9,15 @@ public class EnemyCombat : MonoBehaviour
 
     EnemyAnimatorManager _enemyAnimatorManager;
     public bool _isAttackOneTriggered = false;
+    public float damage;
+
+    AudioManager _audioManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+        _audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
 
     public void SetIsAttackOneTriggered(bool boolean) => _isAttackOneTriggered = boolean;
@@ -41,14 +45,18 @@ public class EnemyCombat : MonoBehaviour
         if (playerCurrentState != PlayerState.Defend)
         {
             HealthSystem ph = player.GetComponent<HealthSystem>();
-            ph.DecereaseHealth(10f);
+            _audioManager.PlayPlayerTakingDamage();
+            ph.DecereaseHealth(damage);
         }
         else
         {
             PlayerAnimatorManager pam = player.GetComponent<PlayerAnimatorManager>();
+            _audioManager.PlaySwordClash();
             pam.PlayDefendSuccessfulAnimation();
         }
     }
+
+    public void SetDamaage(float newDamage) => damage = newDamage;
 
 
 

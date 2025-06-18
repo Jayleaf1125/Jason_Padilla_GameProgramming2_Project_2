@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -13,9 +14,12 @@ public class HealthSystem : MonoBehaviour
 
     public bool isPlayerHealth = true;
 
+    AudioManager _audioManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         _currentHealth = _maxHealth;
         healthbarUI.maxValue = _maxHealth;
         healthbarUI.value = _currentHealth;
@@ -30,6 +34,8 @@ public class HealthSystem : MonoBehaviour
 
     }
 
+    public void SetMaxHealth(float newMaxhealth) => _maxHealth = newMaxhealth;
+
 
     public float GetCurrentHealth() => _currentHealth;
 
@@ -40,10 +46,13 @@ public class HealthSystem : MonoBehaviour
         if (remainingHealth <= 0)
         {
             healthbarUI.value = 0;
-            Destroy(healthbarUI);
+            healthbarUI.gameObject.SetActive(false);
+
             if (isPlayerHealth)
             {
                 _playerAnimatorManager.PlayDeathAnimation();
+                _audioManager.PlayPlayerDeath();
+                StartCoroutine(LoseScreenTransition());
                 return;
             } else
             {
@@ -56,6 +65,12 @@ public class HealthSystem : MonoBehaviour
         _currentHealth = remainingHealth;
         healthbarUI.value = _currentHealth;
         StartCoroutine(TakingDamageAni());
+    }
+
+    IEnumerator LoseScreenTransition()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadSceneAsync(2);
     }
 
     IEnumerator PlayEnemyDeath()
@@ -99,18 +114,10 @@ public class HealthSystem : MonoBehaviour
 
     IEnumerator HealingAni()
     {
-        if (isPlayerHealth)
-        {
-            PlayerMovement.canMove = false;
-            _playerAnimatorManager.SetPlayerHealingTrue();
-            yield return new WaitForSeconds(0.75f);
-            PlayerMovement.canMove = true;
-            _playerAnimatorManager.SetPlayerHealingFalse();
-        } else
-        {
-            _enemyAnimatorManager.SetEnemyHurtingTrue();
-            yield return new WaitForSeconds(0.75f);
-            _enemyAnimatorManager.SetEnemyHurtingFalse();
-        }
+        PlayerMovement.canMove = false;
+        _playerAnimatorManager.SetPlayerHealingTrue();
+        yield return new WaitForSeconds(0.75f);
+        PlayerMovement.canMove = true;
+        _playerAnimatorManager.SetPlayerHealingFalse();
     }
 }
