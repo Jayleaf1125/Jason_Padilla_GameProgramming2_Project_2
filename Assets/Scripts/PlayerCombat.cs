@@ -7,22 +7,18 @@ public class PlayerCombat : MonoBehaviour
     public float attackOneRange;
     public LayerMask enemyLayer;
 
+    public float damage;
+    AudioManager _audioManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        _audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
 
     public void HandleAttackOne()
     {
-        Debug.Log("Hello, I'm Attack One");
-        Collider2D enemy = Physics2D.OverlapCircle(attackOnePos.position, attackOneRange, enemyLayer);
+        Collider2D enemy = Physics2D.OverlapCircle(attackOnePos.position, attackOneRange, enemyLayer) ?? null;
 
         if (enemy == null)
         {
@@ -30,6 +26,8 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
+        _audioManager.PlaySwordHitSound();
+        enemy.GetComponent<HealthSystem>().DecereaseHealth(damage);
         StartCoroutine(Test(enemy));
     }
 
