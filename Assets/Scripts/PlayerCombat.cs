@@ -20,15 +20,7 @@ public class PlayerCombat : MonoBehaviour
     {
         Collider2D enemy = Physics2D.OverlapCircle(attackOnePos.position, attackOneRange, enemyLayer) ?? null;
 
-        Debug.Log(enemy);
-        Debug.Log(enemy.name);
-        Debug.Log(enemy.tag);
-
-        if (enemy == null)
-        {
-            Debug.Log("Enemy Not Found");
-            return;
-        }
+        if (enemy == null) return;
 
         if (enemy.CompareTag("Detection") || enemy.name == "Detection Range")
         {
